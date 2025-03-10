@@ -72,7 +72,6 @@ class Timetable {
                 "Wednesday",
                 "Thursday",
                 "Friday",
-                "Saturday",
             ];
             return days[date.getDay()];
         };
