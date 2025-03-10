@@ -165,13 +165,29 @@ class Timetable {
      * @returns {number} Index of the corresponding time slot
      */
     getTimeSlotIndex(timeInMinutes) {
-        // Find the first slot that contains this time
+        // Find the exact slot that matches this time
         const interval = this.options.timeInterval;
         const firstSlotMinutes = this.timeSlots[0].minutes;
         
-        // Calculate how many intervals from the first slot
+        // Calculate exact slot position without rounding
+        // This ensures events start exactly at their specified time
         const slotIndex = Math.floor((timeInMinutes - firstSlotMinutes) / interval);
+        
+        // Ensure the index is within bounds
         return Math.max(0, Math.min(slotIndex, this.timeSlots.length - 1));
+    }
+
+    /**
+     * Determines if a time falls exactly on a time slot
+     * @param {number} timeInMinutes - Time in minutes from midnight
+     * @returns {boolean} Whether the time is exact on a slot
+     */
+    isExactTimeSlot(timeInMinutes) {
+        const interval = this.options.timeInterval;
+        const firstSlotMinutes = this.timeSlots[0].minutes;
+        
+        // Check if time aligns exactly with a slot
+        return (timeInMinutes - firstSlotMinutes) % interval === 0;
     }
 
     /**
@@ -441,10 +457,26 @@ class Timetable {
 
         // Pre-process events to assign them to the correct slot
         days.forEach((day) => {
+            // Group events by their exact start time in minutes
+            const eventsByStartTime = {};
+            
             this.data[day].forEach((event) => {
-                // Calculate which slot this event starts in
-                event.slotIndex = this.getTimeSlotIndex(event.startMinutes);
+                // Get exact slot index without any rounding
+                const slotIndex = this.getTimeSlotIndex(event.startMinutes);
+                event.slotIndex = slotIndex;
+                
+                // Store whether this event starts exactly on a time slot
+                event.exactTimeSlot = this.isExactTimeSlot(event.startMinutes);
+                
+                // Group events by their slot index
+                if (!eventsByStartTime[slotIndex]) {
+                    eventsByStartTime[slotIndex] = [];
+                }
+                eventsByStartTime[slotIndex].push(event);
             });
+            
+            // Replace the events array with the organized version
+            this.data[day] = Object.values(eventsByStartTime).flat();
         });
 
         // Generate rows for each time slot
@@ -492,7 +524,18 @@ class Timetable {
                 if (eventsStartingHere.length > 0) {
                     // We have events starting at this slot
                     eventsStartingHere.forEach((event) => {
-                        const rowSpan = this.getRowSpan(event.duration);
+                        // For events that don't start exactly on a time slot,
+                        // adjust rowspan to account for the offset
+                        let rowSpan = this.getRowSpan(event.duration);
+                        
+                        // If event doesn't start exactly on a slot, add a note
+                        if (!event.exactTimeSlot) {
+                            const minutesOffset = event.startMinutes - this.timeSlots[slotIndex].minutes;
+                            event.displayStartTime = event.startTime + ' (exact)';
+                        } else {
+                            event.displayStartTime = event.startTime;
+                        }
+
                         let cell = document.createElement("td");
                         cell.classList.add("event-cell");
 
@@ -530,10 +573,10 @@ class Timetable {
                         titleElem.textContent = event.name;
                         eventDiv.appendChild(titleElem);
 
-                        // Time range
+                        // Time range - use displayStartTime that includes exact time note if needed
                         let timeRangeElem = document.createElement("div");
                         timeRangeElem.classList.add("event-time");
-                        timeRangeElem.textContent = `${event.startTime} - ${event.endTime}`;
+                        timeRangeElem.textContent = `${event.displayStartTime} - ${event.endTime}`;
                         eventDiv.appendChild(timeRangeElem);
 
                         // Event details
@@ -600,6 +643,10 @@ class Timetable {
                     // Empty cell
                     let cell = document.createElement("td");
                     cell.classList.add("empty-cell");
+                    
+                    // Set minimum height based on time interval
+                    const minHeight = Math.ceil(this.options.timeInterval / 15) * 10;
+                    
                     if (timeSlot.isHour) {
                         cell.classList.add("hour-cell");
                     } else if (timeSlot.isHalfHour) {
@@ -607,6 +654,13 @@ class Timetable {
                     } else {
                         cell.classList.add("quarter-cell");
                     }
+                    
+                    // Add a placeholder div with appropriate height to maintain spacing
+                    let spacerDiv = document.createElement("div");
+                    spacerDiv.style.height = minHeight + "px";
+                    spacerDiv.style.width = "100%";
+                    cell.appendChild(spacerDiv);
+                    
                     row.appendChild(cell);
                 }
             });

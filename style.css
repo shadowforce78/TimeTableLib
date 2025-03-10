@@ -63,6 +63,7 @@
 
 .hour-row {
     border-top: 1px solid #eaeaea;
+    height: 40px; /* Set consistent height for hour rows */
 }
 
 .hour-cell {
@@ -74,11 +75,12 @@
     padding: 4px;
     font-size: 0.85em;
     color: #777;
+    height: 20px; /* Set consistent height for half-hour rows */
 }
 
 .quarter-cell {
     padding: 0;
-    height: 5px;
+    height: 10px; /* Set consistent height for quarter-hour rows */
 }
 
 .quarter-row {
@@ -87,6 +89,8 @@
 
 .empty-cell { 
     background-color: #fcfcfc;
+    /* This ensures the minimum height of empty cells matches the time interval */
+    min-height: 10px;
 }
 
 .event-cell {
