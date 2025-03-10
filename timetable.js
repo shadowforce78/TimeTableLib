@@ -163,6 +163,21 @@ class Timetable {
     }
 
     /**
+     * Gets index of time slot for a specific time in minutes
+     * @param {number} timeInMinutes - Time in minutes from midnight
+     * @returns {number} Index of the corresponding time slot
+     */
+    getTimeSlotIndex(timeInMinutes) {
+        // Find the first slot that contains this time
+        const interval = this.options.timeInterval;
+        const firstSlotMinutes = this.timeSlots[0].minutes;
+        
+        // Calculate how many intervals from the first slot
+        const slotIndex = Math.floor((timeInMinutes - firstSlotMinutes) / interval);
+        return Math.max(0, Math.min(slotIndex, this.timeSlots.length - 1));
+    }
+
+    /**
      * Formats time label
      */
     formatTimeLabel(minutes) {
@@ -177,8 +192,9 @@ class Timetable {
      * Calculate rowspan based on event duration
      */
     getRowSpan(duration) {
-        // Calculate rowspan based on duration (in time interval slots)
-        let rowSpan = Math.max(this.options.minRowSpan, Math.ceil(duration / this.options.timeInterval));
+        // Calculate rowspan based strictly on duration (in time interval slots)
+        // This ensures that an event's height is proportional to its duration
+        let rowSpan = Math.ceil(duration / this.options.timeInterval);
         return rowSpan;
     }
 
@@ -224,6 +240,14 @@ class Timetable {
             this.data[day].sort((a, b) => a.startMinutes - b.startMinutes);
         });
 
+        // Pre-process events to assign them to the correct slot
+        days.forEach((day) => {
+            this.data[day].forEach((event) => {
+                // Calculate which slot this event starts in
+                event.slotIndex = this.getTimeSlotIndex(event.startMinutes);
+            });
+        });
+
         // Generate rows for each time slot
         this.timeSlots.forEach((timeSlot, slotIndex) => {
             let row = document.createElement("tr");
@@ -261,12 +285,9 @@ class Timetable {
                     return;
                 }
 
-                // Find events that start at this time slot
+                // Find events that should start at exactly this time slot
                 const eventsStartingHere = this.data[day].filter((event) => {
-                    return (
-                        event.startMinutes >= timeSlot.minutes &&
-                        event.startMinutes < timeSlot.minutes + this.options.timeInterval
-                    );
+                    return event.slotIndex === slotIndex;
                 });
 
                 if (eventsStartingHere.length > 0) {
