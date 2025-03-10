@@ -110,6 +110,7 @@
     overflow: hidden;
     position: relative;
     transition: all 0.2s ease;
+    cursor: pointer; /* Add cursor pointer to indicate clickable */
 }
 
 .event:hover {
@@ -130,6 +131,9 @@
     margin-bottom: 6px;
     margin-top: 2px;
     font-size: 0.95em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .event-time { 
@@ -138,6 +142,9 @@
     margin-bottom: 8px;
     display: flex;
     align-items: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .event-time:before {
@@ -162,6 +169,9 @@
     display: flex;
     align-items: flex-start;
     margin-bottom: 2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .location i, .staff i, .group i, .remarks i {
@@ -244,4 +254,98 @@
     .event-title {
         font-size: 0.9em;
     }
+}
+
+/* Modal styles */
+.timetable-modal-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease;
+}
+
+.timetable-modal-backdrop.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.timetable-modal {
+    background: white;
+    border-radius: 8px;
+    max-width: 500px;
+    width: 90%;
+    padding: 20px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    position: relative;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.timetable-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #eee;
+}
+
+.timetable-modal-title {
+    margin: 0;
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #333;
+}
+
+.timetable-modal-close {
+    background: none;
+    border: none;
+    font-size: 1.5em;
+    cursor: pointer;
+    padding: 0;
+    color: #999;
+}
+
+.timetable-modal-close:hover {
+    color: #333;
+}
+
+.timetable-modal-body {
+    margin-bottom: 15px;
+}
+
+.timetable-modal-footer {
+    text-align: right;
+    padding-top: 10px;
+    border-top: 1px solid #eee;
+}
+
+.timetable-modal-info {
+    margin-bottom: 12px;
+}
+
+.timetable-modal-info h4 {
+    margin: 0 0 5px 0;
+    font-size: 1em;
+    color: #666;
+}
+
+.timetable-modal-info p {
+    margin: 0;
+    font-size: 1em;
+}
+
+.modal-color-indicator {
+    height: 5px;
+    border-radius: 3px 3px 0 0;
+    margin: -20px -20px 15px -20px;
 }

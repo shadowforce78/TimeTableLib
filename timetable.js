@@ -15,9 +15,13 @@ class Timetable {
         this.options = this._mergeDefaultOptions(options);
         this.data = this.prepareData(data);
         this.timeSlots = this.generateTimeSlots();
+        this.modalElement = null;
 
         // Load required CSS and dependencies
         this._loadDependencies();
+
+        // Create modal
+        this._createModal();
 
         // Render the timetable
         this.render();
@@ -31,7 +35,8 @@ class Timetable {
             weekdays: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
             timeInterval: 15, // minutes
             minRowSpan: 2,
-            showIcons: true
+            showIcons: true,
+            modalEnabled: true // New option to enable/disable modal
         };
 
         return { ...defaults, ...userOptions };
@@ -196,6 +201,193 @@ class Timetable {
         // This ensures that an event's height is proportional to its duration
         let rowSpan = Math.ceil(duration / this.options.timeInterval);
         return rowSpan;
+    }
+
+    /**
+     * Creates modal element for event details
+     */
+    _createModal() {
+        // Only create modal if enabled in options
+        if (!this.options.modalEnabled) {
+            return;
+        }
+
+        // Create modal backdrop
+        const modalBackdrop = document.createElement('div');
+        modalBackdrop.className = 'timetable-modal-backdrop';
+        
+        // Create modal container
+        const modal = document.createElement('div');
+        modal.className = 'timetable-modal';
+        
+        // Modal header with close button
+        const modalHeader = document.createElement('div');
+        modalHeader.className = 'timetable-modal-header';
+        
+        const modalTitle = document.createElement('h3');
+        modalTitle.className = 'timetable-modal-title';
+        
+        const closeButton = document.createElement('button');
+        closeButton.className = 'timetable-modal-close';
+        closeButton.innerHTML = '&times;';
+        closeButton.addEventListener('click', () => {
+            this.closeModal();
+        });
+        
+        modalHeader.appendChild(modalTitle);
+        modalHeader.appendChild(closeButton);
+        
+        // Color indicator at top of modal
+        const colorIndicator = document.createElement('div');
+        colorIndicator.className = 'modal-color-indicator';
+        
+        // Modal body for content
+        const modalBody = document.createElement('div');
+        modalBody.className = 'timetable-modal-body';
+        
+        // Modal footer
+        const modalFooter = document.createElement('div');
+        modalFooter.className = 'timetable-modal-footer';
+        
+        // Assemble modal
+        modal.appendChild(colorIndicator);
+        modal.appendChild(modalHeader);
+        modal.appendChild(modalBody);
+        modal.appendChild(modalFooter);
+        modalBackdrop.appendChild(modal);
+        
+        // Add click event to backdrop for closing
+        modalBackdrop.addEventListener('click', (e) => {
+            if (e.target === modalBackdrop) {
+                this.closeModal();
+            }
+        });
+        
+        // Add keyboard event to close on escape
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && modalBackdrop.classList.contains('active')) {
+                this.closeModal();
+            }
+        });
+        
+        // Add to DOM
+        document.body.appendChild(modalBackdrop);
+        this.modalElement = {
+            backdrop: modalBackdrop,
+            modal: modal,
+            title: modalTitle,
+            body: modalBody,
+            footer: modalFooter,
+            colorIndicator: colorIndicator
+        };
+    }
+
+    /**
+     * Opens modal with event details
+     * @param {Object} event - Event object with details
+     */
+    openModal(event) {
+        if (!this.modalElement || !this.options.modalEnabled) {
+            return;
+        }
+        
+        // Set category class for styling
+        const categoryClass = event.category.toLowerCase().replace(/\s+/g, "-");
+        this.modalElement.colorIndicator.className = 'modal-color-indicator';
+        this.modalElement.colorIndicator.classList.add(categoryClass);
+        
+        // Set title
+        this.modalElement.title.textContent = event.name;
+        
+        // Build content
+        let content = '';
+        
+        // Time information
+        content += `
+            <div class="timetable-modal-info">
+                <h4>Time</h4>
+                <p>${event.startTime} - ${event.endTime}</p>
+            </div>
+        `;
+        
+        // Category
+        if (event.category) {
+            content += `
+                <div class="timetable-modal-info">
+                    <h4>Category</h4>
+                    <p>${event.category}</p>
+                </div>
+            `;
+        }
+        
+        // Location
+        if (event.location && event.location !== "TBD") {
+            content += `
+                <div class="timetable-modal-info">
+                    <h4>Location</h4>
+                    <p>${event.location}</p>
+                </div>
+            `;
+        }
+        
+        // Staff
+        if (event.staff && event.staff !== "N/A") {
+            content += `
+                <div class="timetable-modal-info">
+                    <h4>Staff</h4>
+                    <p>${event.staff}</p>
+                </div>
+            `;
+        }
+        
+        // Group
+        if (event.group && event.group !== "All") {
+            content += `
+                <div class="timetable-modal-info">
+                    <h4>Group</h4>
+                    <p>${event.group}</p>
+                </div>
+            `;
+        }
+        
+        // Remarks
+        if (event.remarks) {
+            content += `
+                <div class="timetable-modal-info">
+                    <h4>Notes</h4>
+                    <p>${event.remarks}</p>
+                </div>
+            `;
+        }
+        
+        // Set content
+        this.modalElement.body.innerHTML = content;
+        
+        // Add close button to footer
+        this.modalElement.footer.innerHTML = '<button class="btn-close">Close</button>';
+        this.modalElement.footer.querySelector('.btn-close').addEventListener('click', () => {
+            this.closeModal();
+        });
+        
+        // Show modal
+        this.modalElement.backdrop.classList.add('active');
+        
+        // Prevent body scrolling
+        document.body.style.overflow = 'hidden';
+    }
+
+    /**
+     * Closes the modal
+     */
+    closeModal() {
+        if (!this.modalElement) {
+            return;
+        }
+        
+        this.modalElement.backdrop.classList.remove('active');
+        
+        // Restore body scrolling
+        document.body.style.overflow = '';
     }
 
     /**
@@ -386,6 +578,13 @@ class Timetable {
                         }
 
                         eventDiv.appendChild(detailsElem);
+
+                        // Add click event to open modal with details
+                        if (this.options.modalEnabled) {
+                            eventDiv.addEventListener('click', () => {
+                                this.openModal(event);
+                            });
+                        }
 
                         cell.appendChild(eventDiv);
                         row.appendChild(cell);
