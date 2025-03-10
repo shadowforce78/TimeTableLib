@@ -275,6 +275,21 @@ class Timetable {
     }
 
     /**
+     * Cleans category string for CSS class use by removing parentheses and special characters
+     * @param {string} category - The category string to clean
+     * @returns {string} Cleaned category string suitable for CSS class
+     */
+    _cleanCategoryForCss(category) {
+        if (!category) return 'other';
+        // Remove parentheses and their content, then trim and convert to kebab-case
+        return category
+            .replace(/\s*\([^)]*\)/g, '') // Remove parentheses and their content
+            .toLowerCase()
+            .trim()
+            .replace(/\s+/g, '-');
+    }
+
+    /**
      * Opens modal with event details
      * @param {Object} event - Event object with details
      */
@@ -283,8 +298,8 @@ class Timetable {
             return;
         }
         
-        // Set category class for styling
-        const categoryClass = event.category.toLowerCase().replace(/\s+/g, "-");
+        // Set category class for styling - use cleaned category
+        const categoryClass = this._cleanCategoryForCss(event.category);
         this.modalElement.colorIndicator.className = 'modal-color-indicator';
         this.modalElement.colorIndicator.classList.add(categoryClass);
         
@@ -496,7 +511,7 @@ class Timetable {
 
                         // Create the event div
                         let eventDiv = document.createElement("div");
-                        const categoryClass = event.category.toLowerCase().replace(/\s+/g, "-");
+                        const categoryClass = this._cleanCategoryForCss(event.category);
                         eventDiv.classList.add("event", categoryClass);
 
                         // Add classes to indicate duration
