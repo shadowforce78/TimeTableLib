@@ -1,0 +1,247 @@
+/**
+ * TimeTableLib - A JavaScript library for displaying interactive timetables
+ * Version 1.0.0
+ * 
+ * Main stylesheet
+ */
+
+/* Container styles */
+.timetable-wrapper {
+    max-width: 100%;
+    overflow-x: auto;
+    padding: 1rem;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    --primary-color: #3a86ff;
+    --secondary-color: #8338ec;
+    --success-color: #06d6a0;
+    --warning-color: #ffbe0b;
+    --danger-color: #ef476f;
+    --light-color: #f8f9fa;
+    --dark-color: #212529;
+    background-color: #f8f9fa;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+/* Table structure */
+.timetable { 
+    width: 100%; 
+    border-collapse: separate; 
+    border-spacing: 1px;
+    table-layout: fixed;
+    background-color: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.timetable th { 
+    background-color: var(--primary-color);
+    color: white;
+    text-align: center;
+    padding: 12px 16px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    border: none;
+}
+
+.timetable td {
+    border: none;
+    padding: 0;
+    position: relative;
+    background-color: #fff;
+}
+
+/* Time column styles */
+.time-cell { 
+    width: 80px;
+    text-align: center; 
+    font-weight: 500; 
+    vertical-align: middle;
+    color: #555;
+    border-right: 1px solid #eaeaea !important;
+}
+
+.hour-row {
+    border-top: 1px solid #eaeaea;
+}
+
+.hour-cell {
+    padding: 8px;
+    background-color: rgba(0, 0, 0, 0.02);
+}
+
+.half-hour-cell {
+    padding: 4px;
+    font-size: 0.85em;
+    color: #777;
+}
+
+.quarter-cell {
+    padding: 0;
+    height: 5px;
+}
+
+.quarter-row {
+    height: 10px;
+}
+
+.empty-cell { 
+    background-color: #fcfcfc;
+}
+
+.event-cell {
+    padding: 0;
+    vertical-align: top;
+}
+
+/* Event styles */
+.event {
+    margin: 1px;
+    padding: 10px; 
+    width: calc(100% - 2px);
+    height: calc(100% - 2px); 
+    box-sizing: border-box;
+    border-radius: 6px;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.06);
+    display: flex;
+    flex-direction: column;
+    min-height: 40px;
+    overflow: hidden;
+    position: relative;
+    transition: all 0.2s ease;
+}
+
+.event:hover {
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    transform: translateY(-1px);
+}
+
+.event-color-bar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+}
+
+.event-title { 
+    font-weight: 600; 
+    margin-bottom: 6px;
+    margin-top: 2px;
+    font-size: 0.95em;
+}
+
+.event-time { 
+    font-size: 0.8em; 
+    color: #666; 
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+}
+
+.event-time:before {
+    content: "\f017";  /* Clock icon */
+    font-family: "Font Awesome 6 Free";
+    font-weight: 900;
+    margin-right: 4px;
+    font-size: 0.9em;
+    color: #888;
+}
+
+.event-details { 
+    font-size: 0.85em; 
+    color: #555; 
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.location, .staff, .group, .remarks {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 2px;
+}
+
+.location i, .staff i, .group i, .remarks i {
+    margin-right: 5px;
+    width: 12px;
+    color: #666;
+}
+
+/* Event category styles */
+.travaux-dirigés-td .event-color-bar { 
+    background-color: #3a86ff;
+}
+
+.travaux-pratiques-tp .event-color-bar { 
+    background-color: #8338ec;
+}
+
+.cours-magistraux-cm .event-color-bar { 
+    background-color: #ff9e00;
+}
+
+.projet-en-autonomie .event-color-bar { 
+    background-color: #06d6a0;
+}
+
+.ds .event-color-bar { 
+    background-color: #ef476f;
+}
+
+.reunion .event-color-bar { 
+    background-color: #8ac926;
+}
+
+/* Styles based on event duration */
+.short-event {
+    background-color: rgba(255, 255, 255, 0.95);
+}
+
+.medium-event {
+    background-color: rgba(255, 255, 255, 0.97);
+}
+
+.long-event {
+    background-color: rgba(255, 255, 255, 1);
+}
+
+/* Animation */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.event {
+    animation: fadeIn 0.3s ease-out forwards;
+}
+
+/* Alternate background for readability */
+.timetable td:nth-child(2n+3) {
+    background-color: rgba(0, 0, 0, 0.01);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .timetable-wrapper {
+        padding: 0.5rem;
+    }
+    
+    .timetable {
+        font-size: 0.85em;
+    }
+    
+    .time-cell {
+        width: 60px;
+    }
+    
+    .event {
+        padding: 6px;
+    }
+    
+    .event-title {
+        font-size: 0.9em;
+    }
+}
