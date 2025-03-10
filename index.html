@@ -115,7 +115,8 @@
     // Sample data
     const scheduleData = [
     {
-      "Heure": "10/03/2025 14:00-15:00",
+      "Date": "10/03/2025",
+      "Heure": "14:00-15:00",
       "Matière": "IN2R06",
       "Personnel": "ZEITOUNI Karine",
       "Groupe": "INF1",
@@ -124,7 +125,8 @@
       "Remarques": null
     },
     {
-      "Heure": "10/03/2025 09:30-11:00",
+      "Date": "10/03/2025",
+      "Heure": "09:30-11:00",
       "Matière": "IN2R11",
       "Personnel": "BARBOT Emmanuelle",
       "Groupe": "INF1-B",
@@ -133,23 +135,28 @@
       "Remarques": null
     },
     {
-      "Heure": "10/03/2025 15:00-17:00",
+      "Date": "10/03/2025",
+      "Heure": "15:00-17:00",
       "Matière": "IN2R03",
       "Personnel": "ROBBA Isabelle",
       "Groupe": "INF1-B",
+      "Salle": null,
       "Catégorie d’événement": "Travaux Dirigés (TD)",
       "Remarques": null
     },
     {
-      "Heure": "10/03/2025 11:00-13:00",
+      "Date": "10/03/2025",
+      "Heure": "11:00-13:00",
       "Matière": "IN2SA04",
+      "Personnel": null,
       "Groupe": "INF1-B",
       "Salle": "G23 - VEL",
       "Catégorie d’événement": "Projet en autonomie",
       "Remarques": null
     },
     {
-      "Heure": "12/03/2025 09:00-10:00",
+      "Date": "12/03/2025",
+      "Heure": "09:00-10:00",
       "Matière": "IN2R04",
       "Personnel": "OSTER Alain",
       "Groupe": "INF1-B",
@@ -158,7 +165,8 @@
       "Remarques": null
     },
     {
-      "Heure": "12/03/2025 10:00-12:00",
+      "Date": "12/03/2025",
+      "Heure": "10:00-12:00",
       "Matière": "IN2R04",
       "Personnel": "OSTER Alain",
       "Groupe": "INF1-B",
@@ -167,7 +175,8 @@
       "Remarques": null
     },
     {
-      "Heure": "12/03/2025 13:00-15:00",
+      "Date": "12/03/2025",
+      "Heure": "13:00-15:00",
       "Matière": "IN2R07",
       "Personnel": "OSTER Alain",
       "Groupe": "INF1-B",
@@ -176,7 +185,8 @@
       "Remarques": null
     },
     {
-      "Heure": "12/03/2025 15:00-17:00",
+      "Date": "12/03/2025",
+      "Heure": "15:00-17:00",
       "Matière": "IN2R13",
       "Personnel": "TROTIGNON Clemence",
       "Groupe": "INF1-B",
@@ -185,7 +195,8 @@
       "Remarques": null
     },
     {
-      "Heure": "13/03/2025 09:00-11:00",
+      "Date": "13/03/2025",
+      "Heure": "09:00-11:00",
       "Matière": "IN2R01",
       "Personnel": "OSTER Alain",
       "Groupe": "INF1-B",
@@ -194,7 +205,8 @@
       "Remarques": null
     },
     {
-      "Heure": "13/03/2025 13:00-16:00",
+      "Date": "13/03/2025",
+      "Heure": "13:00-16:00",
       "Matière": "IN2R07, IN2R12",
       "Personnel": "CUKALLA Etleva, OSTER Alain",
       "Groupe": "INF1-B",
@@ -203,7 +215,8 @@
       "Remarques": null
     },
     {
-      "Heure": "13/03/2025 16:00-17:00",
+      "Date": "13/03/2025",
+      "Heure": "16:00-17:00",
       "Matière": "IN2R12",
       "Personnel": "CUKALLA Etleva",
       "Groupe": "INF1-B",
@@ -212,7 +225,8 @@
       "Remarques": null
     },
     {
-      "Heure": "13/03/2025 11:00-12:00",
+      "Date": "13/03/2025",
+      "Heure": "11:00-12:00",
       "Matière": "IN2R01",
       "Personnel": "ROBBA Isabelle",
       "Groupe": "INF1",
@@ -221,7 +235,8 @@
       "Remarques": null
     },
     {
-      "Heure": "13/03/2025 08:00-09:00",
+      "Date": "13/03/2025",
+      "Heure": "08:00-09:00",
       "Matière": "IN2R01",
       "Personnel": "OSTER Alain",
       "Groupe": "INF1-B",
@@ -230,24 +245,8 @@
       "Remarques": null
     },
     {
-      "Heure": "14/03/2025 08:30-10:30",
-      "Matière": "IN2R06",
-      "Personnel": "ZEITOUNI Karine",
-      "Groupe": "INF1-B",
-      "Salle": "G25 - VEL",
-      "Catégorie d’événement": "Travaux Dirigés (TD)",
-      "Remarques": null
-    },
-    {
-      "Heure": "14/03/2025 10:30-12:30",
-      "Matière": "IN2SA04",
-      "Groupe": "INF1-B",
-      "Salle": "G23 - VEL",
-      "Catégorie d’événement": "Projet en autonomie",
-      "Remarques": null
-    },
-    {
-      "Heure": "11/03/2025 11:00-12:30",
+      "Date": "11/03/2025",
+      "Heure": "11:00-12:30",
       "Matière": "IN2R08",
       "Personnel": "HOGUIN Fabrice",
       "Groupe": "INF1",
@@ -256,14 +255,18 @@
       "Remarques": null
     },
     {
-      "Heure": "11/03/2025 09:30-11:00",
+      "Date": "11/03/2025",
+      "Heure": "09:30-11:00",
+      "Matière": null,
+      "Personnel": null,
       "Groupe": "INF1-B",
       "Salle": "G21 - VEL",
       "Catégorie d’événement": "Reunion",
       "Remarques": "[Alternance] : Atelier CFA recherche d'entreprise, avec Allan Dauvergne, chargé de relations entreprises CFA-Numia"
     },
     {
-      "Heure": "11/03/2025 13:30-15:30",
+      "Date": "11/03/2025",
+      "Heure": "13:30-15:30",
       "Matière": "IN2R01",
       "Personnel": "MARTIN Yohann, OSTER Alain",
       "Groupe": "INF1-B",
@@ -272,11 +275,32 @@
       "Remarques": null
     },
     {
-      "Heure": "11/03/2025 15:30-17:00",
+      "Date": "11/03/2025",
+      "Heure": "15:30-17:00",
       "Matière": "IN2R07",
       "Personnel": "OSTER Alain",
       "Groupe": "INF1-B",
       "Salle": "314 - VEL",
+      "Catégorie d’événement": "Travaux Dirigés (TD)",
+      "Remarques": null
+    },
+    {
+      "Date": "14/03/2025",
+      "Heure": "10:30-12:30",
+      "Matière": "IN2SA04",
+      "Personnel": null,
+      "Groupe": "INF1-B",
+      "Salle": "G23 - VEL",
+      "Catégorie d’événement": "Projet en autonomie",
+      "Remarques": null
+    },
+    {
+      "Date": "14/03/2025",
+      "Heure": "08:30-10:30",
+      "Matière": "IN2R06",
+      "Personnel": "ZEITOUNI Karine",
+      "Groupe": "INF1-B",
+      "Salle": "G25 - VEL",
       "Catégorie d’événement": "Travaux Dirigés (TD)",
       "Remarques": null
     }
