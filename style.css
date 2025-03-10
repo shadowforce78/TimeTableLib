@@ -205,6 +205,19 @@
     background-color: #8ac926;
 }
 
+/* Add these additional selectors to catch all variations */
+.travaux-dirigés .event-color-bar {
+    background-color: #3a86ff;
+}
+
+.travaux-pratiques .event-color-bar {
+    background-color: #8338ec;
+}
+
+.cours-magistraux .event-color-bar {
+    background-color: #ff9e00;
+}
+
 /* Styles based on event duration */
 .short-event {
     background-color: rgba(255, 255, 255, 0.95);

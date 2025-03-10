@@ -130,28 +130,20 @@ class Timetable {
     }
 
     /**
-     * Generates time slots based on events
+     * Generates time slots based on fixed range from 8:00 to 18:00
      */
     generateTimeSlots() {
-        // Find the earliest start time and latest end time across all events
-        let earliestStart = 23 * 60 + 59; // 23:59 in minutes
-        let latestEnd = 0;
-
-        Object.values(this.data).forEach((dayEvents) => {
-            dayEvents.forEach((event) => {
-                earliestStart = Math.min(earliestStart, event.startMinutes);
-                latestEnd = Math.max(latestEnd, event.endMinutes);
-            });
-        });
-
-        // Round down to the nearest interval for start time
-        earliestStart = Math.floor(earliestStart / this.options.timeInterval) * this.options.timeInterval;
-        // Round up to the nearest interval for end time
-        latestEnd = Math.ceil(latestEnd / this.options.timeInterval) * this.options.timeInterval;
-
+        // Use fixed start and end times (8:00 to 18:00)
+        const startHour = 8; // 8:00
+        const endHour = 18;  // 18:00
+        
+        // Convert hours to minutes
+        const startTimeMinutes = startHour * 60;
+        const endTimeMinutes = endHour * 60;
+        
         // Create time slots with specified time intervals
         const slots = [];
-        for (let time = earliestStart; time < latestEnd; time += this.options.timeInterval) {
+        for (let time = startTimeMinutes; time < endTimeMinutes; time += this.options.timeInterval) {
             const hour = Math.floor(time / 60);
             const minute = time % 60;
             slots.push({
