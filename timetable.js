@@ -15,14 +15,14 @@ class Timetable {
         this.options = this._mergeDefaultOptions(options);
         this.data = this.prepareData(data);
         this.timeSlots = this.generateTimeSlots();
-        
+
         // Load required CSS and dependencies
         this._loadDependencies();
-        
+
         // Render the timetable
         this.render();
     }
-    
+
     /**
      * Merges user provided options with defaults
      */
@@ -33,10 +33,10 @@ class Timetable {
             minRowSpan: 2,
             showIcons: true
         };
-        
-        return {...defaults, ...userOptions};
+
+        return { ...defaults, ...userOptions };
     }
-    
+
     /**
      * Loads external dependencies (FontAwesome)
      */
@@ -111,11 +111,11 @@ class Timetable {
                     endMinutes: timeInfo.endMinutes,
                     duration: timeInfo.duration,
                     name:
-                        event.Matière || event["Catégorie d'événement"] || "Unspecified",
+                        event.Matière || event["Catégorie d’événement"] || "Unspecified",
                     location: event.Salle || "TBD",
                     staff: event.Personnel || "N/A",
                     group: event.Groupe || "All",
-                    category: event["Catégorie d'événement"] || "Other",
+                    category: event["Catégorie d’événement"] || "Other",
                     remarks: event.Remarques || "",
                 });
             }
@@ -194,7 +194,7 @@ class Timetable {
         this.container.innerHTML = "";
         const wrapper = document.createElement("div");
         wrapper.classList.add("timetable-wrapper");
-        
+
         let table = document.createElement("table");
         table.classList.add("timetable");
 
@@ -292,7 +292,7 @@ class Timetable {
                         let eventDiv = document.createElement("div");
                         const categoryClass = event.category.toLowerCase().replace(/\s+/g, "-");
                         eventDiv.classList.add("event", categoryClass);
-                        
+
                         // Add classes to indicate duration
                         if (event.duration <= 30) eventDiv.classList.add("short-event");
                         else if (event.duration <= 60) eventDiv.classList.add("medium-event");
@@ -318,7 +318,7 @@ class Timetable {
                         // Event details
                         let detailsElem = document.createElement("div");
                         detailsElem.classList.add("event-details");
-                        
+
                         // Add icons for each information element if enabled
                         if (this.options.showIcons) {
                             if (event.location && event.location !== "TBD") {
@@ -326,19 +326,19 @@ class Timetable {
                                     <div class="location"><i class="fas fa-map-marker-alt"></i> ${event.location}</div>
                                 `;
                             }
-                            
+
                             if (event.staff && event.staff !== "N/A") {
                                 detailsElem.innerHTML += `
                                     <div class="staff"><i class="fas fa-user"></i> ${event.staff}</div>
                                 `;
                             }
-                            
+
                             if (event.group && event.group !== "All") {
                                 detailsElem.innerHTML += `
                                     <div class="group"><i class="fas fa-users"></i> ${event.group}</div>
                                 `;
                             }
-                            
+
                             if (event.remarks) {
                                 detailsElem.innerHTML += `
                                     <div class="remarks"><i class="fas fa-info-circle"></i> ${event.remarks}</div>
@@ -349,20 +349,20 @@ class Timetable {
                             if (event.location && event.location !== "TBD") {
                                 detailsElem.innerHTML += `<div class="location">Location: ${event.location}</div>`;
                             }
-                            
+
                             if (event.staff && event.staff !== "N/A") {
                                 detailsElem.innerHTML += `<div class="staff">Staff: ${event.staff}</div>`;
                             }
-                            
+
                             if (event.group && event.group !== "All") {
                                 detailsElem.innerHTML += `<div class="group">Group: ${event.group}</div>`;
                             }
-                            
+
                             if (event.remarks) {
                                 detailsElem.innerHTML += `<div class="remarks">Note: ${event.remarks}</div>`;
                             }
                         }
-                        
+
                         eventDiv.appendChild(detailsElem);
 
                         cell.appendChild(eventDiv);
