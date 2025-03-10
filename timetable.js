@@ -240,16 +240,17 @@ class Timetable {
 
             // Time column - only show labels for hours and half hours
             let timeCell = document.createElement("td");
-            if (timeSlot.isHour || timeSlot.isHalfHour) {
+            if (timeSlot.isHour) {
                 timeCell.textContent = timeSlot.label;
                 timeCell.classList.add("time-cell");
-                if (timeSlot.isHour) {
-                    timeCell.classList.add("hour-cell");
-                } else {
-                    timeCell.classList.add("half-hour-cell");
-                }
+                timeCell.classList.add("hour-cell");
             } else {
-                timeCell.classList.add("time-cell", "quarter-cell");
+                timeCell.classList.add("time-cell");
+                if (timeSlot.isHalfHour) {
+                    timeCell.classList.add("half-hour-cell");
+                } else {
+                    timeCell.classList.add("quarter-cell");
+                }
             }
             row.appendChild(timeCell);
 
