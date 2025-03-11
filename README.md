@@ -17,7 +17,7 @@
 Include the stylesheet and script in your HTML:
 
 ```html
-<link rel="stylesheet" href="path/to/style.css">
+<link rel="stylesheet" href="path/to/style.css" />
 <script src="path/to/timetable.js"></script>
 ```
 
@@ -26,8 +26,8 @@ Include the stylesheet and script in your HTML:
 If using a bundler, import the library:
 
 ```javascript
-import Timetable from 'path/to/timetable.js';
-import 'path/to/style.css';
+import Timetable from "path/to/timetable.js";
+import "path/to/style.css";
 ```
 
 ## Usage Example
@@ -43,25 +43,25 @@ Initialize the library with your data:
 ```javascript
 const scheduleData = [
   {
-    "Date": "10/03/2025",
-    "Heure": "14:00-15:00",
-    "Matière": "IN2R06",
-    "Personnel": "ZEITOUNI Karine",
-    "Groupe": "INF1",
-    "Salle": "Amphi B - VEL",
+    Date: "10/03/2025",
+    Heure: "14:00-15:00",
+    Matière: "IN2R06",
+    Personnel: "ZEITOUNI Karine",
+    Groupe: "INF1",
+    Salle: "Amphi B - VEL",
     "Catégorie d’événement": "Cours Magistraux (CM)",
-    "Remarques": null
+    Remarques: null,
   },
   // ... additional events ...
 ];
 
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener("DOMContentLoaded", function () {
   const timetable = new Timetable("timetable-container", scheduleData, {
     weekdays: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
     timeInterval: 15,
     minRowSpan: 2,
     showIcons: true,
-    modalEnabled: true
+    modalEnabled: true,
   });
 });
 ```
@@ -70,13 +70,13 @@ document.addEventListener('DOMContentLoaded', function () {
 
 ### Configuration Options
 
-When initializing, you can adjust options via the third parameter:
-
-- `weekdays`: An array of weekdays.
-- `timeInterval`: The duration (in minutes) of each time segment (default is 15).
-- `minRowSpan`: Minimum number of segments for very short events.
-- `showIcons`: Enable/disable icon display.
-- `modalEnabled`: Toggle the modal for detailed event info.
+| Option       | Type    | Default                                                    | Description                                      |
+| ------------ | ------- | ---------------------------------------------------------- | ------------------------------------------------ |
+| weekdays     | Array   | `["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]` | List of weekdays to display                      |
+| timeInterval | Number  | `15`                                                       | Duration (in minutes) of each time segment       |
+| minRowSpan   | Number  | `2`                                                        | Minimum number of segments for very short events |
+| showIcons    | Boolean | `true`                                                     | Enable/disable display of icons                  |
+| modalEnabled | Boolean | `true`                                                     | Toggle the modal for detailed event information  |
 
 ### Styling
 
