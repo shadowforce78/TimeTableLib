@@ -36,7 +36,8 @@ class Timetable {
             timeInterval: 15, // minutes
             minRowSpan: 2,
             showIcons: true,
-            modalEnabled: true // New option to enable/disable modal
+            modalEnabled: true, // New option to enable/disable modal
+            showBasicInfo: true  // NEW option: display professor and room in basic info
         };
 
         return { ...defaults, ...userOptions };
@@ -564,18 +565,20 @@ class Timetable {
                         eventDiv.appendChild(timeRangeElem);
 
                         // ADD BASIC INFO: show location if defined
-                        if (event.location && event.location !== "TBD") {
-                            let basicInfo = document.createElement("div");
-                            basicInfo.classList.add("event-basic-info");
-                            basicInfo.textContent = event.location;
-                            eventDiv.appendChild(basicInfo);
-                        }
-                        // ADD: professor basic info (if defined and not "N/A")
-                        if (event.staff && event.staff !== "N/A") {
-                            let profInfo = document.createElement("div");
-                            profInfo.classList.add("event-basic-info");
-                            profInfo.textContent = event.staff;
-                            eventDiv.appendChild(profInfo);
+                        if (this.options.showBasicInfo) {
+                            if (event.location && event.location !== "TBD") {
+                                let basicInfo = document.createElement("div");
+                                basicInfo.classList.add("event-basic-info");
+                                basicInfo.textContent = event.location;
+                                eventDiv.appendChild(basicInfo);
+                            }
+                            // ADD: professor basic info (if defined and not "N/A")
+                            if (event.staff && event.staff !== "N/A") {
+                                let profInfo = document.createElement("div");
+                                profInfo.classList.add("event-basic-info");
+                                profInfo.textContent = event.staff;
+                                eventDiv.appendChild(profInfo);
+                            }
                         }
 
                         let detailsElem = document.createElement("div");
@@ -622,18 +625,20 @@ class Timetable {
                             eventDiv.appendChild(timeRangeElem);
 
                             // ADD BASIC INFO: show location if defined
-                            if (event.location && event.location !== "TBD") {
-                                let basicInfo = document.createElement("div");
-                                basicInfo.classList.add("event-basic-info");
-                                basicInfo.textContent = event.location;
-                                eventDiv.appendChild(basicInfo);
-                            }
-                            // ADD: professor basic info (if defined and not "N/A")
-                            if (event.staff && event.staff !== "N/A") {
-                                let profInfo = document.createElement("div");
-                                profInfo.classList.add("event-basic-info");
-                                profInfo.textContent = event.staff;
-                                eventDiv.appendChild(profInfo);
+                            if (this.options.showBasicInfo) {
+                                if (event.location && event.location !== "TBD") {
+                                    let basicInfo = document.createElement("div");
+                                    basicInfo.classList.add("event-basic-info");
+                                    basicInfo.textContent = event.location;
+                                    eventDiv.appendChild(basicInfo);
+                                }
+                                // ADD: professor basic info (if defined and not "N/A")
+                                if (event.staff && event.staff !== "N/A") {
+                                    let profInfo = document.createElement("div");
+                                    profInfo.classList.add("event-basic-info");
+                                    profInfo.textContent = event.staff;
+                                    eventDiv.appendChild(profInfo);
+                                }
                             }
 
                             let detailsElem = document.createElement("div");

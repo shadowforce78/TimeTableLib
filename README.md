@@ -70,13 +70,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
 ### Configuration Options
 
-| Option       | Type    | Default                                                    | Description                                      |
-| ------------ | ------- | ---------------------------------------------------------- | ------------------------------------------------ |
-| weekdays     | Array   | `["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]` | List of weekdays to display                      |
-| timeInterval | Number  | `15`                                                       | Duration (in minutes) of each time segment       |
-| minRowSpan   | Number  | `2`                                                        | Minimum number of segments for very short events |
-| showIcons    | Boolean | `true`                                                     | Enable/disable display of icons                  |
-| modalEnabled | Boolean | `true`                                                     | Toggle the modal for detailed event information  |
+| Option          | Type    | Default                                                    | Description                                               |
+|-----------------|---------|------------------------------------------------------------|-----------------------------------------------------------|
+| weekdays        | Array   | `["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]` | List of weekdays to display                               |
+| timeInterval    | Number  | `15`                                                       | Duration (in minutes) of each time segment                |
+| minRowSpan      | Number  | `2`                                                        | Minimum number of segments for very short events          |
+| showIcons       | Boolean | `true`                                                     | Enable/disable display of icons                           |
+| modalEnabled    | Boolean | `true`                                                     | Toggle the modal for detailed event information           |
+| **showBasicInfo** | Boolean | `true`                                                     | Display professor and room info as basic details on events  |
 
 ### Styling
 
