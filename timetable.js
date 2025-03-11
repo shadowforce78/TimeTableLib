@@ -37,7 +37,8 @@ class Timetable {
             minRowSpan: 2,
             showIcons: true,
             modalEnabled: true, // New option to enable/disable modal
-            showBasicInfo: true  // NEW option: display professor and room in basic info
+            showProf: true,     // NEW option: display professor info
+            showClasse: true    // NEW option: display classroom info
         };
 
         return { ...defaults, ...userOptions };
@@ -565,14 +566,15 @@ class Timetable {
                         eventDiv.appendChild(timeRangeElem);
 
                         // ADD BASIC INFO: show location if defined
-                        if (this.options.showBasicInfo) {
+                        if (this.options.showClasse) {
                             if (event.location && event.location !== "TBD") {
-                                let basicInfo = document.createElement("div");
-                                basicInfo.classList.add("event-basic-info");
-                                basicInfo.textContent = event.location;
-                                eventDiv.appendChild(basicInfo);
+                                let classeInfo = document.createElement("div");
+                                classeInfo.classList.add("event-basic-info");
+                                classeInfo.textContent = event.location;
+                                eventDiv.appendChild(classeInfo);
                             }
-                            // ADD: professor basic info (if defined and not "N/A")
+                        }
+                        if (this.options.showProf) {
                             if (event.staff && event.staff !== "N/A") {
                                 let profInfo = document.createElement("div");
                                 profInfo.classList.add("event-basic-info");
@@ -625,14 +627,15 @@ class Timetable {
                             eventDiv.appendChild(timeRangeElem);
 
                             // ADD BASIC INFO: show location if defined
-                            if (this.options.showBasicInfo) {
+                            if (this.options.showClasse) {
                                 if (event.location && event.location !== "TBD") {
-                                    let basicInfo = document.createElement("div");
-                                    basicInfo.classList.add("event-basic-info");
-                                    basicInfo.textContent = event.location;
-                                    eventDiv.appendChild(basicInfo);
+                                    let classeInfo = document.createElement("div");
+                                    classeInfo.classList.add("event-basic-info");
+                                    classeInfo.textContent = event.location;
+                                    eventDiv.appendChild(classeInfo);
                                 }
-                                // ADD: professor basic info (if defined and not "N/A")
+                            }
+                            if (this.options.showProf) {
                                 if (event.staff && event.staff !== "N/A") {
                                     let profInfo = document.createElement("div");
                                     profInfo.classList.add("event-basic-info");
