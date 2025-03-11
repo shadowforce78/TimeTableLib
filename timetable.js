@@ -563,6 +563,21 @@ class Timetable {
                         timeRangeElem.textContent = `${event.displayStartTime} - ${event.endTime}`;
                         eventDiv.appendChild(timeRangeElem);
                         
+                        // ADD BASIC INFO: show location if defined
+                        if (event.location && event.location !== "TBD") {
+                            let basicInfo = document.createElement("div");
+                            basicInfo.classList.add("event-basic-info");
+                            basicInfo.textContent = event.location;
+                            eventDiv.appendChild(basicInfo);
+                        }
+                        // ADD: professor basic info (if defined and not "N/A")
+                        if (event.staff && event.staff !== "N/A") {
+                            let profInfo = document.createElement("div");
+                            profInfo.classList.add("event-basic-info");
+                            profInfo.textContent = event.staff;
+                            eventDiv.appendChild(profInfo);
+                        }
+                        
                         let detailsElem = document.createElement("div");
                         detailsElem.classList.add("event-details");
                         /* ...existing icon/text details code... */
@@ -606,9 +621,24 @@ class Timetable {
                             timeRangeElem.textContent = `${event.displayStartTime} - ${event.endTime}`;
                             eventDiv.appendChild(timeRangeElem);
                             
+                            // ADD BASIC INFO: show location if defined
+                            if (event.location && event.location !== "TBD") {
+                                let basicInfo = document.createElement("div");
+                                basicInfo.classList.add("event-basic-info");
+                                basicInfo.textContent = event.location;
+                                eventDiv.appendChild(basicInfo);
+                            }
+                            // ADD: professor basic info (if defined and not "N/A")
+                            if (event.staff && event.staff !== "N/A") {
+                                let profInfo = document.createElement("div");
+                                profInfo.classList.add("event-basic-info");
+                                profInfo.textContent = event.staff;
+                                eventDiv.appendChild(profInfo);
+                            }
+                            
                             let detailsElem = document.createElement("div");
                             detailsElem.classList.add("event-details");
-                            /* ...existing icon/text details code... */
+
                             eventDiv.appendChild(detailsElem);
                             
                             if (this.options.modalEnabled) {
