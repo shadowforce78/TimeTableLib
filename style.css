@@ -61,9 +61,19 @@
     border-right: 1px solid #eaeaea !important;
 }
 
-.hour-row {
-    border-top: 1px solid #eaeaea;
-    height: 40px; /* Set consistent height for hour rows */
+/* Remove variable row heights; assign a constant height for each 15 min segment */
+.hour-row,
+.half-hour-row,
+.quarter-row {
+    height: 20px;
+}
+
+/* Ensure empty cells and event cells fill the segment height */
+.empty-cell {
+    min-height: 20px;
+}
+.event-cell {
+    height: 100%;
 }
 
 .hour-cell {
@@ -75,22 +85,14 @@
     padding: 4px;
     font-size: 0.85em;
     color: #777;
-    height: 20px; /* Set consistent height for half-hour rows */
 }
 
 .quarter-cell {
     padding: 0;
-    height: 10px; /* Set consistent height for quarter-hour rows */
-}
-
-.quarter-row {
-    height: 10px;
 }
 
 .empty-cell { 
     background-color: #fcfcfc;
-    /* This ensures the minimum height of empty cells matches the time interval */
-    min-height: 10px;
 }
 
 .event-cell {
@@ -103,7 +105,6 @@
     margin: 1px;
     padding: 10px; 
     width: calc(100% - 2px);
-    height: calc(100% - 2px); 
     box-sizing: border-box;
     border-radius: 6px;
     background-color: #fff;
@@ -111,7 +112,7 @@
     display: flex;
     flex-direction: column;
     min-height: 40px;
-    overflow: hidden;
+    overflow: auto; /* Change from hidden to auto to show all content */
     position: relative;
     transition: all 0.2s ease;
     cursor: pointer; /* Add cursor pointer to indicate clickable */
@@ -167,6 +168,7 @@
     display: flex;
     flex-direction: column;
     gap: 4px;
+    overflow: auto; /* Allow scrolling if content is too large */
 }
 
 .location, .staff, .group, .remarks {
