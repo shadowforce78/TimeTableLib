@@ -136,11 +136,11 @@ class Timetable {
         // Use fixed start and end times (8:00 to 18:00)
         const startHour = 8; // 8:00
         const endHour = 18;  // 18:00
-        
+
         // Convert hours to minutes
         const startTimeMinutes = startHour * 60;
         const endTimeMinutes = endHour * 60;
-        
+
         // Create time slots with specified time intervals
         const slots = [];
         for (let time = startTimeMinutes; time < endTimeMinutes; time += this.options.timeInterval) {
@@ -167,7 +167,7 @@ class Timetable {
     getTimeSlotIndex(timeInMinutes) {
         const interval = this.options.timeInterval;
         const firstSlotMinutes = this.timeSlots[0].minutes;
-        
+
         // Calculate the exact slot index without any rounding or adjustment
         return Math.floor((timeInMinutes - firstSlotMinutes) / interval);
     }
@@ -180,7 +180,7 @@ class Timetable {
     isExactTimeSlot(timeInMinutes) {
         const interval = this.options.timeInterval;
         const firstSlotMinutes = this.timeSlots[0].minutes;
-        
+
         // Check if time aligns exactly with a slot
         return (timeInMinutes - firstSlotMinutes) % interval === 0;
     }
@@ -216,61 +216,61 @@ class Timetable {
         // Create modal backdrop
         const modalBackdrop = document.createElement('div');
         modalBackdrop.className = 'timetable-modal-backdrop';
-        
+
         // Create modal container
         const modal = document.createElement('div');
         modal.className = 'timetable-modal';
-        
+
         // Modal header with close button
         const modalHeader = document.createElement('div');
         modalHeader.className = 'timetable-modal-header';
-        
+
         const modalTitle = document.createElement('h3');
         modalTitle.className = 'timetable-modal-title';
-        
+
         const closeButton = document.createElement('button');
         closeButton.className = 'timetable-modal-close';
         closeButton.innerHTML = '&times;';
         closeButton.addEventListener('click', () => {
             this.closeModal();
         });
-        
+
         modalHeader.appendChild(modalTitle);
         modalHeader.appendChild(closeButton);
-        
+
         // Color indicator at top of modal
         const colorIndicator = document.createElement('div');
         colorIndicator.className = 'modal-color-indicator';
-        
+
         // Modal body for content
         const modalBody = document.createElement('div');
         modalBody.className = 'timetable-modal-body';
-        
+
         // Modal footer
         const modalFooter = document.createElement('div');
         modalFooter.className = 'timetable-modal-footer';
-        
+
         // Assemble modal
         modal.appendChild(colorIndicator);
         modal.appendChild(modalHeader);
         modal.appendChild(modalBody);
         modal.appendChild(modalFooter);
         modalBackdrop.appendChild(modal);
-        
+
         // Add click event to backdrop for closing
         modalBackdrop.addEventListener('click', (e) => {
             if (e.target === modalBackdrop) {
                 this.closeModal();
             }
         });
-        
+
         // Add keyboard event to close on escape
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape' && modalBackdrop.classList.contains('active')) {
                 this.closeModal();
             }
         });
-        
+
         // Add to DOM
         document.body.appendChild(modalBackdrop);
         this.modalElement = {
@@ -306,18 +306,18 @@ class Timetable {
         if (!this.modalElement || !this.options.modalEnabled) {
             return;
         }
-        
+
         // Set category class for styling - use cleaned category
         const categoryClass = this._cleanCategoryForCss(event.category);
         this.modalElement.colorIndicator.className = 'modal-color-indicator';
         this.modalElement.colorIndicator.classList.add(categoryClass);
-        
+
         // Set title
         this.modalElement.title.textContent = event.name;
-        
+
         // Build content
         let content = '';
-        
+
         // Time information
         content += `
             <div class="timetable-modal-info">
@@ -325,7 +325,7 @@ class Timetable {
                 <p>${event.startTime} - ${event.endTime}</p>
             </div>
         `;
-        
+
         // Category
         if (event.category) {
             content += `
@@ -335,7 +335,7 @@ class Timetable {
                 </div>
             `;
         }
-        
+
         // Location
         if (event.location && event.location !== "TBD") {
             content += `
@@ -345,7 +345,7 @@ class Timetable {
                 </div>
             `;
         }
-        
+
         // Staff
         if (event.staff && event.staff !== "N/A") {
             content += `
@@ -355,7 +355,7 @@ class Timetable {
                 </div>
             `;
         }
-        
+
         // Group
         if (event.group && event.group !== "All") {
             content += `
@@ -365,7 +365,7 @@ class Timetable {
                 </div>
             `;
         }
-        
+
         // Remarks
         if (event.remarks) {
             content += `
@@ -375,19 +375,19 @@ class Timetable {
                 </div>
             `;
         }
-        
+
         // Set content
         this.modalElement.body.innerHTML = content;
-        
+
         // Add close button to footer
         this.modalElement.footer.innerHTML = '<button class="btn-close">Close</button>';
         this.modalElement.footer.querySelector('.btn-close').addEventListener('click', () => {
             this.closeModal();
         });
-        
+
         // Show modal
         this.modalElement.backdrop.classList.add('active');
-        
+
         // Prevent body scrolling
         document.body.style.overflow = 'hidden';
     }
@@ -399,9 +399,9 @@ class Timetable {
         if (!this.modalElement) {
             return;
         }
-        
+
         this.modalElement.backdrop.classList.remove('active');
-        
+
         // Restore body scrolling
         document.body.style.overflow = '';
     }
@@ -452,19 +452,19 @@ class Timetable {
         days.forEach((day) => {
             // Sort events by their start time
             this.data[day].sort((a, b) => a.startMinutes - b.startMinutes);
-            
+
             this.data[day].forEach((event) => {
                 // Get exact slot index for the start time
                 const slotIndex = this.getTimeSlotIndex(event.startMinutes);
                 event.slotIndex = slotIndex;
                 event.rowSpan = this.getRowSpan(event.duration); // rowSpan directly from duration
                 event.exactTimeSlot = this.isExactTimeSlot(event.startMinutes);
-                
+
                 // Calculate position offset if not aligned with time slot
                 if (!event.exactTimeSlot) {
                     const slotStartMinutes = this.timeSlots[slotIndex].minutes;
                     event.offsetMinutes = event.startMinutes - slotStartMinutes;
-                    
+
                     // Handle events that don't start exactly on time slots
                     if (event.offsetMinutes > 0) {
                         // No need to adjust rowspan here - we'll use the full duration
@@ -520,7 +520,7 @@ class Timetable {
                     // Compute rowspan for each event already computed as ceil(duration / 15)
                     // Use maximum if multiple events occupy same slot.
                     let cellRowSpan = Math.max(...eventsStartingHere.map(event => event.rowSpan));
-                    
+
                     let cell = document.createElement("td");
                     cell.classList.add("event-cell");
                     cell.style.height = "100%";
@@ -530,7 +530,7 @@ class Timetable {
                             cellOccupied[day][slotIndex + i] = true;
                         }
                     }
-                    
+
                     // If only one event, render as before;
                     // if multiple, use a flex container to display them side by side.
                     if (eventsStartingHere.length === 1) {
@@ -547,22 +547,22 @@ class Timetable {
                         const segmentHeight = 20;
                         eventDiv.style.height = (event.rowSpan * segmentHeight) + "px";
                         eventDiv.style.overflow = "auto";
-                        
+
                         // ... (retain adding color bar, title, time, details, click event) ...
                         let colorBar = document.createElement("div");
                         colorBar.classList.add("event-color-bar", categoryClass);
                         eventDiv.appendChild(colorBar);
-                        
+
                         let titleElem = document.createElement("div");
                         titleElem.classList.add("event-title");
                         titleElem.textContent = event.name;
                         eventDiv.appendChild(titleElem);
-                        
+
                         let timeRangeElem = document.createElement("div");
                         timeRangeElem.classList.add("event-time");
                         timeRangeElem.textContent = `${event.displayStartTime} - ${event.endTime}`;
                         eventDiv.appendChild(timeRangeElem);
-                        
+
                         // ADD BASIC INFO: show location if defined
                         if (event.location && event.location !== "TBD") {
                             let basicInfo = document.createElement("div");
@@ -577,12 +577,12 @@ class Timetable {
                             profInfo.textContent = event.staff;
                             eventDiv.appendChild(profInfo);
                         }
-                        
+
                         let detailsElem = document.createElement("div");
                         detailsElem.classList.add("event-details");
                         /* ...existing icon/text details code... */
                         eventDiv.appendChild(detailsElem);
-                        
+
                         if (this.options.modalEnabled) {
                             eventDiv.addEventListener('click', () => { this.openModal(event); });
                         }
@@ -606,21 +606,21 @@ class Timetable {
                             eventDiv.style.height = (event.rowSpan * segmentHeight) + "px";
                             eventDiv.style.flex = "1"; // evenly distribute width
                             eventDiv.style.overflow = "auto";
-                            
+
                             let colorBar = document.createElement("div");
                             colorBar.classList.add("event-color-bar", categoryClass);
                             eventDiv.appendChild(colorBar);
-                            
+
                             let titleElem = document.createElement("div");
                             titleElem.classList.add("event-title");
                             titleElem.textContent = event.name;
                             eventDiv.appendChild(titleElem);
-                            
+
                             let timeRangeElem = document.createElement("div");
                             timeRangeElem.classList.add("event-time");
                             timeRangeElem.textContent = `${event.displayStartTime} - ${event.endTime}`;
                             eventDiv.appendChild(timeRangeElem);
-                            
+
                             // ADD BASIC INFO: show location if defined
                             if (event.location && event.location !== "TBD") {
                                 let basicInfo = document.createElement("div");
@@ -635,12 +635,12 @@ class Timetable {
                                 profInfo.textContent = event.staff;
                                 eventDiv.appendChild(profInfo);
                             }
-                            
+
                             let detailsElem = document.createElement("div");
                             detailsElem.classList.add("event-details");
 
                             eventDiv.appendChild(detailsElem);
-                            
+
                             if (this.options.modalEnabled) {
                                 eventDiv.addEventListener('click', () => { this.openModal(event); });
                             }
@@ -653,10 +653,10 @@ class Timetable {
                     // Empty cell
                     let cell = document.createElement("td");
                     cell.classList.add("empty-cell");
-                    
+
                     // Set minimum height based on time interval
                     const minHeight = Math.ceil(this.options.timeInterval / 15) * 10;
-                    
+
                     if (timeSlot.isHour) {
                         cell.classList.add("hour-cell");
                     } else if (timeSlot.isHalfHour) {
@@ -664,13 +664,13 @@ class Timetable {
                     } else {
                         cell.classList.add("quarter-cell");
                     }
-                    
+
                     // Add a placeholder div with appropriate height to maintain spacing
                     let spacerDiv = document.createElement("div");
                     spacerDiv.style.height = minHeight + "px";
                     spacerDiv.style.width = "100%";
                     cell.appendChild(spacerDiv);
-                    
+
                     row.appendChild(cell);
                 }
             });

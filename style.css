@@ -368,8 +368,3 @@
     border-radius: 3px 3px 0 0;
     margin: -20px -20px 15px -20px;
 }
-
-/* Adjust basic info text size to avoid overlapping */
-.event-basic-info {
-    font-size: 0.75em;
-}
