@@ -25,6 +25,8 @@
     box-sizing: border-box;
 }
 
+/* Variables can be customized by redefining them in your own stylesheet or inline */
+
 /* Table structure */
 .timetable { 
     width: 100%; 
